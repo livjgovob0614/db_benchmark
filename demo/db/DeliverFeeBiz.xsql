@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DeliverFeeBiz">
+	<select id="selectDeliverFee" parameterClass="map" resultClass="hmap" fetchSize="50" ><![CDATA[SELECT  
+        A.SER_NUM,
+        A.DEAL_CO_CD,
+        A.DEL_YN,
+        A.DLV_TYP,
+        A.UNIT,
+        A.UNIT_PRC,
+        A.STA_DT,
+        A.END_DT,
+        A.RMKS,
+        A.INS_DTM,
+        A.INS_USER_ID,
+        A.MOD_DTM,
+        A.MOD_USER_ID,A.UPD_CNT,
+                  'X' AS MAX_FLAG
+            FROM    TBAS_DLV_FEE_MGMT A
+            WHERE   (A.DEAL_CO_CD ,A.SER_NUM) IN (  SELECT  B.DEAL_CO_CD ,                                             
+                                                          MAX(B.SER_NUM) AS SER_NUM
+                                                    FROM    TBAS_DLV_FEE_MGMT  B
+                                                    WHERE   B.DEL_YN = 'N'
+                                                    GROUP BY B.DEAL_CO_CD  )
+AND     A.STA_DT <= #ST_DT#
+AND     A.END_DT >= #ST_DT#                                                    
+ORDER BY A.DEAL_CO_CD]]>
+	</select>
+	<insert id="insertDeliverFee" parameterClass="map" ><![CDATA[INSERT INTO TBAS_DLV_FEE_MGMT
+    (
+    DLV_TYP,
+    UNIT,
+    UNIT_PRC,
+    STA_DT,
+    END_DT,
+    RMKS,
+    DEL_YN,
+    INS_DTM,
+    INS_USER_ID,
+    MOD_DTM,
+    MOD_USER_ID,
+    DEAL_CO_CD,
+    UPD_CNT,
+    SER_NUM
+    )
+VALUES 
+    (
+    #DLV_TYP#,
+    #UNIT#,
+    #UNIT_PRC#,
+    #STA_DT#,
+    #END_DT#,
+    #RMKS#,
+    'N',
+    TO_CHAR(SYSDATE, 'YYYYMMDD'),
+    'SYJ',
+    TO_CHAR(SYSDATE, 'YYYYMMDD'),
+    'SYJ',
+    #DEAL_CO_CD#,
+    1,
+    #SER_NUM#
+    )]]>
+	</insert>
+	<select id="selectDeliverFeeHst" resultClass="hmap" fetchSize="50" ><![CDATA[SELECT  
+        A.SER_NUM,
+        B.MAX_FLAG,
+        A.DEAL_CO_CD,
+        A.DEL_YN,
+        A.DLV_TYP,
+        A.UNIT,
+        A.UNIT_PRC,
+        A.STA_DT,
+        A.END_DT,
+        A.RMKS,
+        A.INS_DTM,
+        A.INS_USER_ID,
+        A.MOD_DTM,
+        A.MOD_USER_ID,A.UPD_CNT
+FROM    TBAS_DLV_FEE_MGMT A,
+        (SELECT  A.SER_NUM,
+                  A.DEAL_CO_CD,
+                  'X' AS MAX_FLAG
+            FROM    TBAS_DLV_FEE_MGMT A
+            WHERE   (A.DEAL_CO_CD ,A.SER_NUM) IN (  SELECT  B.DEAL_CO_CD ,                                             
+                                                          MAX(B.SER_NUM) AS SER_NUM
+                                                    FROM    TBAS_DLV_FEE_MGMT  B
+                                                    WHERE   B.DEL_YN = 'N'
+                                                    GROUP BY B.DEAL_CO_CD  )) B
+WHERE A.SER_NUM = B.SER_NUM(+) 
+  AND A.DEAL_CO_CD = B.DEAL_CO_CD (+)
+  AND A.DEL_YN = 'N'
+ORDER BY A.DEAL_CO_CD, A.SER_NUM]]>
+	</select>
+	<select id="selectSerNum" parameterClass="map" resultClass="hmap" fetchSize="50" ><![CDATA[SELECT  NVL(MAX(SER_NUM)+1,1) AS SER_NUM,
+		NVL(MAX(UPD_CNT)+1,1) AS UPD_CNT
+FROM    TBAS_DLV_FEE_MGMT 
+WHERE   DEAL_CO_CD = #DEAL_CO_CD#]]>
+	</select>
+	<select id="selectDlvUnit" resultClass="hmap" fetchSize="50" ><![CDATA[SELECT  COMM_CD_VAL, COMM_CD_VAL_NM
+FROM    TBAS_COMM_CD_DTL
+WHERE   COMM_CD_ID = 'ZDIS_C_00120']]>
+	</select>
+	<select id="selectDlvTyp" resultClass="hmap" fetchSize="50" ><![CDATA[SELECT  COMM_CD_VAL, COMM_CD_VAL_NM
+FROM    TBAS_COMM_CD_DTL
+WHERE   COMM_CD_ID = 'ZDIS_C_00110']]>
+	</select>
+	<update id="updateEndDt" parameterClass="map" ><![CDATA[UPDATE	TBAS_DLV_FEE_MGMT
+SET 	END_DT = (SELECT STA_DT 
+					FROM TBAS_DLV_FEE_MGMT
+				   WHERE SER_NUM = #SER_NUM#
+				   AND		DEAL_CO_CD = #DEAL_CO_CD#)
+WHERE   SER_NUM = $SER_NUM$-1
+AND		DEAL_CO_CD = #DEAL_CO_CD#
+        ]]>
+	</update>
+	<insert id="insertStaDt" parameterClass="map" ><![CDATA[INSERT INTO TBAS_DLV_FEE_MGMT
+    (
+    DLV_TYP,
+    UNIT,
+    UNIT_PRC,
+    STA_DT,
+    END_DT,
+    RMKS,
+    DEL_YN,
+    INS_DTM,
+    INS_USER_ID,
+    MOD_DTM,
+    MOD_USER_ID,
+    DEAL_CO_CD,
+    UPD_CNT,
+    SER_NUM
+    )
+VALUES 
+    (
+    #DLV_TYP#,
+    #UNIT#,
+    #UNIT_PRC#,
+    TO_CHAR(SYSDATE,'YYYYMMDD'),
+    '99991231',
+    #RMKS#,
+    'N',
+    TO_CHAR(SYSDATE, 'YYYYMMDD'),
+    'SYJ',
+    TO_CHAR(SYSDATE, 'YYYYMMDD'),
+    'SYJ',
+    #DEAL_CO_CD#,
+    1,
+    #SER_NUM#
+    )]]>
+	</insert>
+</sqlMap>
