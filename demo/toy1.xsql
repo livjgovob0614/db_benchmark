@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+  <sqlMap namespace="DeliverFeeBiz">
+ 
+      <select id="selectDeliverFeeHst" resultClass="hmap" fetchSize="50" ><![CDATA[
+  SELECT  
+         SER_NUM,
+         DEAL_CO_CD,
+         DEL_YN,
+         UNIT
+  FROM   MGMT
+  WHERE SER_NUM = 'id123'
+ ]]>
+     </select>
+</sqlMap>
+<note>
+1) SER_NUM = 'id123'
+  SELECT * FROM MGMT WHERE SER_NUM = 'id123'
+2) SER_NUM != 'id123'
+  SELECT * FROM MGMT WHERE SER_NUM != 'id123'
+</note>
