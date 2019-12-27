@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="HelloBizUnit">
+	<parameterMap id="testMap" class="java.util.Map" >
+		<parameter property="OV_ERRCODE" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+		<parameter property="OV_ERRMSG" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+		<parameter property="IV_MGMT_NO_CD" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+		<parameter property="IV_OUT_PLC_ID" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+		<parameter property="IV_IN_PLC_ID" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+		<parameter property="IV_USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+		<parameter property="OV_MGMT_NO" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+	</parameterMap>
+	<procedure id="testProcedure" parameterClass="map" ><![CDATA[{ call SP_DIS_DCO_MGMT_NO ( 
+	#OV_ERRCODE,javaType=java.lang.String,jdbcType=VARCHAR,mode=OUT#, 
+	#OV_ERRMSG,javaType=java.lang.String,jdbcType=VARCHAR,mode=OUT#, 
+	#IV_MGMT_NO_CD,javaType=java.lang.String,jdbcType=VARCHAR,mode=IN#, 
+	#IV_OUT_PLC_ID,javaType=java.lang.String,jdbcType=VARCHAR,mode=IN#, 
+	#IV_IN_PLC_ID,javaType=java.lang.String,jdbcType=VARCHAR,mode=IN#, 
+	#IV_USER_ID,javaType=java.lang.String,jdbcType=VARCHAR,mode=IN#, 
+	#OV_MGMT_NO,javaType=java.lang.String,jdbcType=VARCHAR,mode=OUT#
+) }]]>
+	</procedure>
+	<insert id="insertHello" parameterClass="map" ><![CDATA[insert into SKF_HELLO (
+	ID, NAME, MEMO
+)values(
+	#ID#, #NAME#, #MEMO#
+)]]>
+	</insert>
+	<update id="updateHello" parameterClass="map" ><![CDATA[update SKF_HELLO set 
+	NAME = #NAME#,
+	MEMO = #MEMO#
+where ID = #ID#]]>
+	</update>
+	<delete id="deleteHello" parameterClass="map" ><![CDATA[delete from SKF_HELLO where ID = #ID#]]>
+	</delete>
+	<select id="selectHello" parameterClass="map" resultClass="hmap" fetchSize="50" ><![CDATA[
+select /* 단위업무-sql-조설계-조개발 */
+ID, /* 사용자ID */
+NAME,
+MEMO from SKF_HELLO where ID = #ID#]]>
+	</select>
+	<select id="selectHelloList" resultClass="hmap" fetchSize="50" ><![CDATA[select ID, NAME, MEMO from SKF_HELLO order by ID asc]]>
+	</select>
+	<select id="selectHelloListPage" resultClass="hmap" fetchSize="50" ><![CDATA[select * from(
+	select rownum as rnum, ID, NAME, MEMO from (
+		select ID, NAME, MEMO from SKF_HELLO order by ID asc
+	)	
+)
+where rnum between #nc_firstRowIndex# and #nc_lastRowIndex# 
+order by rnum]]>
+	</select>
+	<select id="selectTotalCount" resultClass="java.lang.Integer" fetchSize="50" ><![CDATA[select count(ID) from SKF_HELLO]]>
+	</select>
+</sqlMap>
