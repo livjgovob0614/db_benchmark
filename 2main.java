@@ -3,7 +3,13 @@ import java.fwk.base;
 import java.util.HashMap;
 import java.util.Map;
 
-class DU { //extends DataUnit {
+/*
+ @ HashMap<String, Object> ----> IRecord
+ @ HashMap<String, List<IRecord> > ----> IRecordSet or IDataSet
+*/
+
+
+class DU {
 
   @BizMethod("일반거래조회")
   public HashMap<String, List<HashMap<String, Object>> > inquire(HashMap<String, List<HashMap<String, Object>> > requestData) {
