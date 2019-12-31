@@ -3,25 +3,13 @@ import java.fwk.base;
 import java.util.HashMap;
 import java.util.Map;
 
-
-public class IRecord extends HashMap<String, Object> {
-}
-
-public class IRecordSet extends HashMap<String, List<IRecord> > {
-}
-
-public class IDataSet extends HashMap<String, List<IRecord> > {
-
-}
-
-
-public class DU { //extends DataUnit {
+class DU { //extends DataUnit {
 
   @BizMethod("일반거래조회")
-  public IDataSet inquire(IDataSet requestData) {
-    IDataSet responseData = new DataSet();
+  public HashMap<String, List<HashMap<String, Object>> > inquire(HashMap<String, List<HashMap<String, Object>> > requestData) {
+    HashMap<String, List<HashMap<String, Object>> > responseData = new DataSet();
 
-    IRecordSet rs = dbSelect("inquire", requestData);
+    HashMap<String, List<HashMap<String, Object>> > rs = dbSelect("inquire", requestData);
 
     if (rs != null) {
       responseData.putAll(rs);
@@ -31,11 +19,11 @@ public class DU { //extends DataUnit {
   }
 
 
-  public IRecordSet dbSelect(String stmtName, IDataSet requestData) {
-    IRecordSet rs = null;
+  public HashMap<String, List<HashMap<String, Object>> > dbSelect(String stmtName, HashMap<String, List<HashMap<String, Object>> > requestData) {
+    HashMap<String, List<HashMap<String, Object>> > rs = null;
 
-    List<IRecord> rl;
-    IRecord r;
+    List<HashMap<String, Object>> rl;
+    HashMap<String, Object> r;
     r.put("CNO", "12345678");
     r.put("BKB_BBL", 1000);
     rl.put(r);
@@ -55,15 +43,15 @@ public class test {
 
   public static void main(String[] args) {
     DU du = new DU();
-    IDataSet requestData;
-    List<IRecord> rl;
-    IRecord r;
+    HashMap<String, List<HashMap<String, Object>> > requestData;
+    List<HashMap<String, Object>> rl;
+    HashMap<String, Object> r;
 
     r.put("CNO", "12345678");
     rl.put(r);
     ds.put("1", rl);
 
-    IDataSet responseData;
+    HashMap<String, List<HashMap<String, Object>> > responseData;
     responseData = du.inquire(requestData);
 
     if (responseData != null) {
@@ -71,8 +59,6 @@ public class test {
         System.out.println(s + ": " + v.stream().collect(Collectors.joining(", ")));
       });
     }
-
-    return 0;
   }
 }
 
