@@ -36,17 +36,10 @@ class DU {
     r.put("BKB_BBL", 1000);
     rl.add(r);
 
-      rl.forEach((l) -> {
-        System.out.println(l);
-      });
-
     r.clear();
     r.put("CNO", "00001111");
     r.put("BKB_BBL", 0);
     rl.add(r);
-      rl.forEach((l) -> {
-        System.out.println(l);
-      });
 
     rs.put("1", rl);
 
