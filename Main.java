@@ -36,9 +36,17 @@ class DU {
     r.put("BKB_BBL", 1000);
     rl.add(r);
 
+      rl.forEach((l) -> {
+        System.out.println(l);
+      });
+
+    r.clear();
     r.put("CNO", "00001111");
     r.put("BKB_BBL", 0);
     rl.add(r);
+      rl.forEach((l) -> {
+        System.out.println(l);
+      });
 
     rs.put("1", rl);
 
@@ -62,13 +70,10 @@ public class Main {
     HashMap<String, List<HashMap<String, Object>> > responseData;
     responseData = du.inquire(requestData);
 
-/*
     if (responseData != null) {
       responseData.forEach((k, v) -> {
-        System.out.println(k + ": " + v.stream().collect(Collectors.joining(", ")));
+        System.out.println(k + ": " + v);
       });
     }
-    */
-    System.out.println("test");
   }
 }
