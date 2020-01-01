@@ -1,7 +1,9 @@
-import java.fwk.base;
+//import java.fwk.base;
 //import java.fwk.base.DataUnit; // dbSelect
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /*
  @ HashMap<String, Object> ----> IRecord
@@ -11,9 +13,9 @@ import java.util.Map;
 
 class DU {
 
-  @BizMethod("일반거래조회")
+  //@BizMethod("일반거래조회")
   public HashMap<String, List<HashMap<String, Object>> > inquire(HashMap<String, List<HashMap<String, Object>> > requestData) {
-    HashMap<String, List<HashMap<String, Object>> > responseData = new DataSet();
+    HashMap<String, List<HashMap<String, Object>> > responseData = new HashMap<String, List<HashMap<String, Object>> >();
 
     HashMap<String, List<HashMap<String, Object>> > rs = dbSelect("inquire", requestData);
 
@@ -28,15 +30,15 @@ class DU {
   public HashMap<String, List<HashMap<String, Object>> > dbSelect(String stmtName, HashMap<String, List<HashMap<String, Object>> > requestData) {
     HashMap<String, List<HashMap<String, Object>> > rs = null;
 
-    List<HashMap<String, Object>> rl;
-    HashMap<String, Object> r;
+    List<HashMap<String, Object>> rl = new ArrayList<HashMap<String,Object>>();
+    HashMap<String, Object> r = new HashMap<String,Object>();
     r.put("CNO", "12345678");
     r.put("BKB_BBL", 1000);
-    rl.put(r);
+    rl.add(r);
 
     r.put("CNO", "00001111");
     r.put("BKB_BBL", 0);
-    rl.put(r);
+    rl.add(r);
 
     rs.put("1", rl);
 
@@ -45,25 +47,27 @@ class DU {
 }
 
 
-public class test {
+public class Main {
 
   public static void main(String[] args) {
     DU du = new DU();
-    HashMap<String, List<HashMap<String, Object>> > requestData;
-    List<HashMap<String, Object>> rl;
-    HashMap<String, Object> r;
+    HashMap<String, List<HashMap<String, Object>> > requestData = new HashMap<String, List<HashMap<String, Object>> >();
+    List<HashMap<String, Object>> rl = new ArrayList<HashMap<String, Object>>();
+    HashMap<String, Object> r = new HashMap<String, Object>();
 
     r.put("CNO", "12345678");
-    rl.put(r);
-    ds.put("1", rl);
+    rl.add(r);
+    requestData.put("1", rl);
 
     HashMap<String, List<HashMap<String, Object>> > responseData;
     responseData = du.inquire(requestData);
 
+/*
     if (responseData != null) {
       responseData.forEach((k, v) -> {
-        System.out.println(s + ": " + v.stream().collect(Collectors.joining(", ")));
+        System.out.println(k + ": " + v.stream().collect(Collectors.joining(", ")));
       });
     }
+    */
   }
 }
