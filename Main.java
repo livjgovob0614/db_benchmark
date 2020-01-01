@@ -28,7 +28,7 @@ class DU {
 
 
   public HashMap<String, List<HashMap<String, Object>> > dbSelect(String stmtName, HashMap<String, List<HashMap<String, Object>> > requestData) {
-    HashMap<String, List<HashMap<String, Object>> > rs = null;
+    HashMap<String, List<HashMap<String, Object>> > rs = new HashMap<String, List<HashMap<String, Object>> >();
 
     List<HashMap<String, Object>> rl = new ArrayList<HashMap<String,Object>>();
     HashMap<String, Object> r = new HashMap<String,Object>();
@@ -69,5 +69,6 @@ public class Main {
       });
     }
     */
+    System.out.println("test");
   }
 }
