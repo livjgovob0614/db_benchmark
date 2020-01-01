@@ -15,11 +15,8 @@ public class GnlTrlnqPU extends kdb.framework.base.ProcessUnit {
 
     try {
       IDataSet inquireGnlTrIn = new DataSet();
-      inquireGnlTrIn.putAll(requestData);
-
-      IDataSet inquireGnlTrOut = new DataSet();
       inquireGnlTrOut = gnlTrlnqFU.inquireGnlTr(inquireGnlTrIn, onlineCtx);
-      responseData.putALl(inquireGnlTrOut);
+      responseData.putAll(inquireGnlTrOut);
     } catch (KDBException be) {
       throw new KDBException("BEXYZ00001", be);
     }
